@@ -1,5 +1,6 @@
 class PicturesController < ApplicationController
-  before_action :set_picture, only: %i[ show edit update destroy ]
+  before_action :set_picture, only: [:show, :edit, :update, :destroy]
+  before_action :correct_user, only: [:edit, :update, :destroy]
 
   # GET /pictures or /pictures.json
   def index
@@ -12,38 +13,39 @@ class PicturesController < ApplicationController
 
   # GET /pictures/new
   def new
+  if params[:back]
+    @picture = Picture.new(picture_params)
+  else
     @picture = Picture.new
   end
+end
 
   # GET /pictures/1/edit
   def edit
+    @picture = Picture.find(params[:id])
   end
 
   # POST /pictures or /pictures.json
   def create
-    @picture = Picture.new(picture_params)
-
-    respond_to do |format|
+    @picture = current_user.pictures.build(picture_params)
+    if params[:back]
+        render :new
+    else
       if @picture.save
-        format.html { redirect_to picture_url(@picture), notice: "Picture was successfully created." }
-        format.json { render :show, status: :created, location: @picture }
+          redirect_to pictures_path, notice: "投稿しました！"
       else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @picture.errors, status: :unprocessable_entity }
+          render :new
       end
     end
   end
 
   # PATCH/PUT /pictures/1 or /pictures/1.json
   def update
-    respond_to do |format|
-      if @picture.update(picture_params)
-        format.html { redirect_to picture_url(@picture), notice: "Picture was successfully updated." }
-        format.json { render :show, status: :ok, location: @picture }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @picture.errors, status: :unprocessable_entity }
-      end
+    @picture = Picture.find(params[:id])
+    if @picture.update(picture_params)
+      redirect_to  pictures_path, notice: "投稿を編集しました！"
+    else
+      render :edit
     end
   end
 
@@ -52,19 +54,31 @@ class PicturesController < ApplicationController
     @picture.destroy
 
     respond_to do |format|
-      format.html { redirect_to pictures_url, notice: "Picture was successfully destroyed." }
+      format.html { redirect_to pictures_url, notice: "削除しました" }
       format.json { head :no_content }
     end
   end
 
+  def confirm
+    @picture = current_user.pictures.build(picture_params)
+    render :new if @picture.invalid?
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
-    def set_picture
-      @picture = Picture.find(params[:id])
-    end
+  def set_picture
+    @picture = Picture.find(params[:id])
+  end
 
     # Only allow a list of trusted parameters through.
-    def picture_params
-      params.require(:picture).permit(:title, :image, :content, :user_id)
+  def picture_params
+    params.require(:picture).permit(:title, :image, :image_cache, :content)
+  end
+
+  def correct_user
+    unless Picture.find(params[:id]).user.id.to_i == current_user.id
+        redirect_to pictures_path(current_user)
+        flash[:notice] = "権限がありません"
     end
+  end
 end
