@@ -19,6 +19,7 @@ class UsersController < ApplicationController
 
   # GET /users/1/edit
   def edit
+    @user = User.find(current_user.id)
   end
 
   # POST /users or /users.json
@@ -40,14 +41,12 @@ class UsersController < ApplicationController
 
   # PATCH/PUT /users/1 or /users/1.json
   def update
-    respond_to do |format|
-      if @user.update(user_params)
-        format.html { redirect_to user_url(@user), notice: "投稿しました" }
-        format.json { render :show, status: :ok, location: @user }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
-      end
+    @user = User.find(current_user.id)
+    if @user.update(user_params)
+      redirect_to profile_path,success: "ユーザーを更新しました"
+    else
+      flash.now[:danger] = "ユーザーを更新できませんでした"
+      render :edit
     end
   end
 
@@ -69,6 +68,6 @@ class UsersController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def user_params
-      params.require(:user).permit(:name, :email, :password, :password_confirmation)
+      params.require(:user).permit(:name, :email, :image, :image_cache, :password, :password_confirmation)
     end
 end

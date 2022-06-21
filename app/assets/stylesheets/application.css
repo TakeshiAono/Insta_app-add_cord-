@@ -13,7 +13,7 @@
  *= require_tree .
  *= require_self
  */
- field img {
+ /* field img {
    width: 30%;
    height: 30%;
  }
@@ -21,4 +21,4 @@
  img {
   width: 30%;
   height: 30%;
- }
+ } */

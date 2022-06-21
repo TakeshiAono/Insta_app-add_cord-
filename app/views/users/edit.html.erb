@@ -1,6 +1,16 @@
 <h1>Editing User</h1>
 
-<%= render 'form', user: @user %>
+<%= form_with(model: @user, local: true) do |f| %>
+  <%= f.label :name %>
+  <%= f.text_field :name %>
+
+  <%= f.label :email %>
+  <%= f.email_field :email %>
+
+  <%= f.label :image %>
+  <%= f.file_field :image %>
+
+  <%= f.submit "アカウント編集" %>
+<%end%>
 
 <%= link_to 'Show', @user %> |
-<%= link_to 'Back', users_path %>
