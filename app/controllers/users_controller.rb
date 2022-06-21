@@ -60,6 +60,10 @@ class UsersController < ApplicationController
     end
   end
 
+  def favorite
+    @favorite_all = current_user.favorite_pictures
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user

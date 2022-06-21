@@ -1,8 +1,9 @@
 <h1>〜<%= @user.name %>さんのプロフィール〜</h1>
 
 <%= image_tag @user.image.url %>
-<p>ユーザーネーム: <%= @user.name %></p>
+<p>ユーザー: <%= @user.name %></p>
 <p>メールアドレス: <%= @user.email %></p>
 
 <%= link_to '編集', edit_user_path(@user) %>
 <%= link_to '一覧画面', pictures_path %>
+<%= link_to 'あなたのお気に入り投稿一覧', favorites_path %>
