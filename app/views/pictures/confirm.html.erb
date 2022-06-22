@@ -2,10 +2,10 @@
 <%= form_with(model: @picture, url: pictures_path, local: true) do |form| %>
   <p>Title:<%= @picture.title %></p>
   <%= form.hidden_field :title %>
-  <%= form.hidden_field :content %>
   <%= image_tag(@picture.image.url) if @picture.image && @picture.image.url %>
   <%= form.hidden_field :image_cache %>
   <p>コメント:<%= @picture.content %></p>
+  <%= form.hidden_field :content %>
   <%= form.submit "投稿する" %>
 <% end %>
 

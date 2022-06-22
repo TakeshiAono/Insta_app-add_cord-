@@ -43,7 +43,7 @@ class UsersController < ApplicationController
   def update
     @user = User.find(current_user.id)
     if @user.update(user_params)
-      redirect_to profile_path,success: "ユーザーを更新しました"
+      redirect_to user_path(@user.id), notice: "ユーザーの内容を更新しました"
     else
       flash.now[:danger] = "ユーザーを更新できませんでした"
       render :edit

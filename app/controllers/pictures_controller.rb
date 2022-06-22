@@ -14,12 +14,12 @@ class PicturesController < ApplicationController
 
   # GET /pictures/new
   def new
-  if params[:back]
-    @picture = Picture.new(picture_params)
-  else
-    @picture = Picture.new
+    if params[:back]
+      @picture = Picture.new(picture_params)
+    else
+      @picture = Picture.new
+    end
   end
-end
 
   # GET /pictures/1/edit
   def edit
@@ -33,9 +33,10 @@ end
         render :new
     else
       if @picture.save
-          redirect_to pictures_path, notice: "投稿しました！"
+        PictureMailer.picture_mail(current_user).deliver
+        redirect_to pictures_path, notice: "投稿しました！"
       else
-          render :new
+        render :new
       end
     end
   end

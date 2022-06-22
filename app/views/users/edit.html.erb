@@ -1,4 +1,5 @@
-<h1>Editing User</h1>
+<h1>〜<%= @user.name %>さんのプロフィール〜</h1>
+<h1>ユーザー編集</h1>
 
 <%= form_with(model: @user, local: true) do |f| %>
   <%= f.label :name %>
@@ -7,10 +8,12 @@
   <%= f.label :email %>
   <%= f.email_field :email %>
 
-  <%= f.label :image %>
-  <%= f.file_field :image %>
+  <%= f.label :プロフィール画像 %>
+  <%= image_tag(@user.image.url) if @user.image && @user.image.url %>
+  <%= f.file_field :image, class: 'form-control' %>
+  <%= f.hidden_field :image_cache %>
 
-  <%= f.submit "アカウント編集" %>
+  <%= f.submit "編集する" %>
 <%end%>
 
 <%= link_to '戻る', @user %> |
