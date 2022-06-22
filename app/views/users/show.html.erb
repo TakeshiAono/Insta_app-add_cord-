@@ -1,6 +1,10 @@
 <h1>〜<%= @user.name %>さんのプロフィール〜</h1>
 
-<%= image_tag @user.image.url %>
+<% if @user.image? %>
+  <%= image_tag @user.image.url, size: '200x200' %>
+<% else %>
+  <%= image_tag 'ゴーディ.jpeg', size: '200x200' %>
+<% end %>
 <p>ユーザー: <%= @user.name %></p>
 <p>メールアドレス: <%= @user.email %></p>
 
