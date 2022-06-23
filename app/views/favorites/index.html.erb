@@ -17,10 +17,10 @@
         <td><%= favorite.picture.title %></td>
         <td class="sample"><%= image_tag favorite.picture.image.url if favorite.picture.present?%></td>
         <td><%= favorite.user.name %></td>
-        <td><%= link_to 'Show', picture_path(favorite.picture.id) %></td>
+        <td><%= link_to '詳細', picture_path(favorite.picture.id) %></td>
         <% if favorite.picture.user == current_user %>
-        <td><%= link_to 'Edit', edit_picture_path(favorite.picture.id) %></td>
-        <td><%= link_to 'Destroy', picture_path(favorite.picture.id), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to '編集', edit_picture_path(favorite.picture.id) %></td>
+        <td><%= link_to '削除', picture_path(favorite.picture.id), method: :delete, data: { confirm: 'Are you sure?' } %></td>
         <% end %>
       </tr>
     <% end %>
